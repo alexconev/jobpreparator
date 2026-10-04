@@ -1,0 +1,353 @@
+<title>AI Readiness Syllabus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one 60rem reading column — market evidence first (bar chart), then 3 month blocks of week cards in a 2-col grid, then readiness checklist. */
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --ink: #17202b;
+  --muted: #5a6675;
+  --line: #dde3ea;
+  --accent: #2f4fd8;
+  --accent-soft: #e6ebff;
+  --bar: #e0a42c;
+  --bar-track: #ebeef2;
+  --done: #2e8a5a;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f141b; --surface: #171e27; --ink: #e6ebf1; --muted: #98a4b3; --line: #2a3441;
+    --accent: #8da2ff; --accent-soft: #222c4a; --bar: #e9b44c; --bar-track: #222b36; --done: #5cc48d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f141b; --surface: #171e27; --ink: #e6ebf1; --muted: #98a4b3; --line: #2a3441;
+  --accent: #8da2ff; --accent-soft: #222c4a; --bar: #e9b44c; --bar-track: #222b36; --done: #5cc48d;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.6 var(--f-body); padding-inline: 16px; padding-block: 0 64px; }
+.wrap { max-width: 60rem; margin: 0 auto; display: grid; gap: 56px; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.6rem; font-weight: 700; }
+h3 { font-size: 1.1rem; font-weight: 600; }
+p { margin: 0; }
+.eyebrow { font: 500 12px/1 var(--f-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.lede { max-width: 62ch; color: var(--muted); font-size: 1.05rem; }
+
+header { padding-top: 48px; display: grid; gap: 16px; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px 28px; font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.stats b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+section { display: grid; gap: 20px; }
+.sec-head { display: grid; gap: 6px; }
+
+/* demand chart */
+.chart { display: grid; gap: 10px; }
+.row { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 2.5rem; gap: 14px; align-items: center; }
+.row .name { font-size: 14px; }
+.row .name small { display: block; color: var(--muted); font-size: 12px; line-height: 1.35; }
+.track { height: 10px; background: var(--bar-track); border-radius: 2px; overflow: hidden; }
+.fill { height: 100%; background: var(--bar); border-radius: 2px; }
+.row .n { font: 500 13px var(--f-mono); text-align: right; font-variant-numeric: tabular-nums; }
+.axis { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 2.5rem; gap: 14px; }
+.axis div:nth-child(2) { display: flex; justify-content: space-between; font: 11px var(--f-mono); color: var(--muted); }
+.note { font-size: 13px; color: var(--muted); }
+.takeaways { display: grid; gap: 8px; margin: 0; padding-left: 1.2rem; max-width: 70ch; }
+
+/* months */
+.month-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; border-bottom: 2px solid var(--ink); padding-bottom: 10px; }
+.month-head .covers { font: 12px var(--f-mono); color: var(--muted); }
+.weeks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.week { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.week.is-done { border-color: var(--done); }
+.week-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.wk { font: 500 12px var(--f-mono); color: var(--accent); letter-spacing: .04em; }
+.check { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); cursor: pointer; user-select: none; }
+.check input { accent-color: var(--done); width: 16px; height: 16px; margin: 0; }
+.week .topics { font-size: 14px; color: var(--muted); }
+.res { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+.res li { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: 8px; align-items: baseline; }
+.tag { font: 500 10.5px/1.8 var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; text-align: center; }
+.do { background: var(--accent-soft); border-radius: 4px; padding: 10px 12px; font-size: 14px; }
+.do b { font-family: var(--f-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); margin-right: 6px; }
+.artifact { grid-column: 1 / -1; border: 1px dashed var(--accent); border-radius: 6px; padding: 14px 18px; font-size: 14px; }
+.artifact b { color: var(--accent); }
+
+/* books & checklist */
+.books { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 12px; }
+.book { border-top: 2px solid var(--ink); padding-top: 10px; display: grid; gap: 4px; }
+.book .who { font-size: 13px; color: var(--muted); }
+.book .why { font-size: 13px; }
+.ready { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; max-width: 70ch; }
+.ready label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.ready input { accent-color: var(--done); width: 16px; height: 16px; margin-top: 4px; flex: none; }
+.progress { font: 13px var(--f-mono); color: var(--muted); }
+.progress b { color: var(--done); font-weight: 500; }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+code { font-family: var(--f-mono); font-size: .9em; }
+
+@media (max-width: 720px) {
+  .weeks { grid-template-columns: minmax(0, 1fr); }
+  .row, .axis { grid-template-columns: minmax(0, 1fr) 2.5rem; }
+  .row .name { grid-column: 1 / -1; }
+  .row .track { grid-column: 1; }
+  .axis div:first-child { display: none; }
+  .axis div:nth-child(2) { grid-column: 1; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">dev.bg job market · scraped 4 Oct 2026 · 12-week program</span>
+    <h1>AI Readiness Syllabus</h1>
+    <p class="lede">A 12-week study plan built from what Bulgarian software employers actually write in their job ads: back-end, front-end, full-stack and IT-management roles.</p>
+    <div class="stats">
+      <span><b>372</b> unique ads read</span>
+      <span><b>150</b> mention AI (<b>40%</b>)</span>
+      <span><b>8–10 h</b> per week</span>
+      <span><b id="prog-head">0/12</b> weeks done</span>
+    </div>
+  </header>
+
+  <section aria-labelledby="demand">
+    <div class="sec-head">
+      <span class="eyebrow">Evidence</span>
+      <h2 id="demand">What the ads ask for</h2>
+      <p class="note">Number of ads mentioning each topic, out of the 150 that mention AI at all. Keyword-based counts; treat them as approximate.</p>
+    </div>
+    <div class="chart" id="chart"></div>
+    <ul class="takeaways">
+      <li><b>Using AI coding agents well is the most common requirement by far.</b> Ads name the tools (Cursor 26, Copilot 26, Claude Code 23) and stress reviewing, testing and owning what the agent produces.</li>
+      <li><b>Building LLM features is what sets candidates apart:</b> agents, tool calling, RAG, structured output, MCP.</li>
+      <li><b>Production concerns appear in senior ads:</b> evals, observability, guardrails, prompt-injection defence, cost control.</li>
+      <li>Training models (PyTorch, fine-tuning) is rarely required for these developer roles, so it is an optional stretch here.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="books">
+    <div class="sec-head">
+      <span class="eyebrow">Shelf</span>
+      <h2 id="books">Core books</h2>
+    </div>
+    <div class="books" id="booklist"></div>
+  </section>
+
+  <div id="months" class="wrap" style="gap:56px"></div>
+
+  <section aria-labelledby="readyh">
+    <div class="sec-head">
+      <span class="eyebrow">Exit criteria</span>
+      <h2 id="readyh">You are ready when you can…</h2>
+      <p class="progress" id="prog-ready"></p>
+    </div>
+    <ul class="ready" id="ready"></ul>
+  </section>
+
+  <footer>
+    Generated from <code>data/jobs.jsonl</code> in the <code>jobpreparator</code> project. Re-run <code>scraper/scrape_devbg.py</code> and <code>analysis/extract_ai_topics.py</code> to refresh the numbers. Checkmarks are saved only in this browser.
+  </footer>
+</div>
+
+<script>
+const DEMAND = [
+  ["AI-assisted development", "Claude Code, Cursor, Copilot, Codex", 72],
+  ["Agents & agentic workflows", "orchestration, tool calling, state", 53],
+  ["LLM APIs & providers", "OpenAI, Anthropic, Bedrock, Vertex, Azure", 35],
+  ["GenAI / LLM fundamentals", "tokens, context, hallucination", 32],
+  ["Prompt & context engineering", "", 28],
+  ["Data engineering for AI", "pipelines, Spark, Databricks", 19],
+  ["RAG", "embeddings, chunking, vector DBs", 15],
+  ["AI strategy & adoption", "lead and manager roles", 15],
+  ["ML frameworks", "PyTorch, TensorFlow, Hugging Face", 11],
+  ["MCP", "Model Context Protocol, A2A", 9],
+  ["Evals, guardrails, observability", "Langfuse, LangSmith, RAGAS", 9],
+  ["LLM frameworks", "LangChain, LangGraph, LlamaIndex", 7],
+  ["AI security", "prompt injection, OWASP LLM Top 10", 6],
+];
+
+const BOOKS = [
+  ["AI Engineering", "Chip Huyen · O'Reilly, 2025", "Main textbook for the whole program."],
+  ["Hands-On Large Language Models", "Jay Alammar & Maarten Grootendorst · O'Reilly, 2024", "Visual intuition for how LLMs, embeddings and RAG work."],
+  ["Prompt Engineering for LLMs", "John Berryman & Albert Ziegler · O'Reilly, 2024", "Prompt and context design for applications."],
+  ["Build a Large Language Model (From Scratch)", "Sebastian Raschka · Manning, 2024", "Optional, for depth."],
+  ["LLM Engineer's Handbook", "Paul Iusztin & Maxime Labonne · Packt, 2024", "Optional, for LLMOps."],
+];
+
+const L = (t, u) => u ? `<a href="${u}" target="_blank" rel="noopener">${t}</a>` : t;
+const DLAI = "https://www.deeplearning.ai/short-courses/";
+
+const MONTHS = [
+  { n: 1, title: "Foundations & AI-assisted development", covers: "covers topics: AI-assisted dev · fundamentals · prompting",
+    weeks: [
+      { t: "How LLMs work (just enough to debug them)",
+        topics: "Tokens, context window, temperature and sampling, non-determinism, hallucination, pre-training vs. instruction tuning vs. RLHF, model tiers.",
+        res: [["video", L("Karpathy: Intro to Large Language Models", "https://www.youtube.com/watch?v=zjkBMFhNj_g")],
+              ["video", L("Karpathy: Deep Dive into LLMs like ChatGPT", "https://www.youtube.com/watch?v=7xTGNNLPyMI")],
+              ["video", L("3Blue1Brown: Neural Networks (transformer and attention chapters)", "https://www.3blue1brown.com/topics/neural-networks")],
+              ["book", "Hands-On LLMs ch. 1–3 · AI Engineering ch. 1–2"]],
+        do: "Call an LLM API from a script. Count tokens and compare outputs at different temperatures." },
+      { t: "Prompt & context engineering",
+        topics: "System prompts, few-shot, chain-of-thought, structured output (JSON schema), prompt templates, what to put in the context window and what to leave out.",
+        res: [["course", L("Anthropic Prompt Engineering Interactive Tutorial", "https://github.com/anthropics/prompt-eng-interactive-tutorial")],
+              ["course", L("DeepLearning.AI: ChatGPT Prompt Engineering for Developers", DLAI)],
+              ["book", "Prompt Engineering for LLMs · AI Engineering ch. 5"],
+              ["docs", "Anthropic and OpenAI prompt-engineering guides"]],
+        do: "Extract seniority, stack and AI requirements from 50 ads in jobs.jsonl into validated JSON (Pydantic)." },
+      { t: "AI coding agents in daily work",
+        topics: "Claude Code, Cursor, Copilot agent mode; project memory files (CLAUDE.md, rules), custom commands, plan-then-execute, parallel agents with git worktrees, hooks, giving agents tests to verify against.",
+        res: [["read", L("Anthropic: Claude Code best practices", "https://www.anthropic.com/engineering/claude-code-best-practices")],
+              ["docs", L("Claude Code docs", "https://docs.anthropic.com/en/docs/claude-code/overview")],
+              ["docs", "Cursor docs (rules, agent) · GitHub Copilot docs (agent mode)"]],
+        do: "Build one feature in your main stack only through an agent. Log what it got wrong and how you caught it." },
+      { t: "Spec-driven development & reviewing AI output",
+        topics: "Specs an agent can execute, test-first with agents, reviewing generated code for security, performance and coupling; secrets, IP and data protection.",
+        res: [["docs", L("GitHub spec-kit", "https://github.com/github/spec-kit")],
+              ["read", L("Simon Willison's blog: AI-assisted programming", "https://simonwillison.net/tags/ai-assisted-programming/")],
+              ["topic", L("DORA research on AI-assisted software development", "https://dora.dev")]],
+        do: "Write the spec first, have the agent implement against it, then review it as if a junior wrote it." },
+    ],
+    artifact: "Repo with a feature built through an agent (spec → plan → code → tests) plus a short write-up: what I delegate to AI and what I check myself." },
+  { n: 2, title: "Building LLM features", covers: "covers topics: LLM APIs · RAG · agents · MCP · frameworks",
+    weeks: [
+      { t: "LLM APIs in production code",
+        topics: "Messages API, streaming (SSE/WebSockets to the UI), tool calling, structured outputs, retries, rate limits, timeouts, prompt caching, multi-provider abstraction.",
+        res: [["docs", L("Anthropic API docs (tool use, streaming, caching)", "https://docs.anthropic.com")],
+              ["docs", "OpenAI API docs · Bedrock / Azure OpenAI / Vertex AI quick-starts"],
+              ["course", L("DeepLearning.AI: Building Systems with the ChatGPT API", DLAI)]],
+        do: "An API endpoint that streams answers about a job ad to a small web UI." },
+      { t: "RAG",
+        topics: "Embeddings, chunking strategies, vector search (pgvector first, then Pinecone, Qdrant or Weaviate), hybrid BM25 + vector search, re-ranking, metadata filters, citations.",
+        res: [["book", "AI Engineering ch. 6 · Hands-On LLMs ch. 8"],
+              ["course", L("DeepLearning.AI: Building and Evaluating Advanced RAG", DLAI)],
+              ["docs", L("pgvector", "https://github.com/pgvector/pgvector")]],
+        do: "Capstone step 1: RAG over jobs.jsonl in Postgres + pgvector. Ask “Which companies want LangGraph?” and get answers with links to the ads." },
+      { t: "Agents",
+        topics: "Agent loop, tool design, planning, memory, state machines, loop and stop handling, multi-agent patterns, human-in-the-loop approval gates, workflows vs. agents.",
+        res: [["read", L("Anthropic: Building Effective Agents", "https://www.anthropic.com/research/building-effective-agents")],
+              ["read", L("Lilian Weng: LLM Powered Autonomous Agents", "https://lilianweng.github.io/posts/2023-06-23-agent/")],
+              ["course", L("Hugging Face AI Agents Course", "https://huggingface.co/learn/agents-course")],
+              ["course", L("Microsoft AI Agents for Beginners", "https://github.com/microsoft/ai-agents-for-beginners")],
+              ["course", L("DeepLearning.AI: AI Agents in LangGraph", DLAI)]],
+        do: "Write an agent loop by hand, then build the same agent in LangGraph and compare the two." },
+      { t: "MCP & frameworks",
+        topics: "MCP hosts, clients and servers; tools, resources and prompts; stdio and streamable HTTP; auth; tool descriptions a model uses correctly; A2A. Frameworks: LangGraph, LlamaIndex, PydanticAI, CrewAI; Spring AI or LangChain4j (Java), Semantic Kernel (.NET).",
+        res: [["docs", L("modelcontextprotocol.io (spec and SDKs)", "https://modelcontextprotocol.io")],
+              ["docs", L("FastMCP", "https://gofastmcp.com")],
+              ["course", L("DeepLearning.AI: MCP: Build Rich-Context AI Apps with Anthropic", DLAI)]],
+        do: "Capstone step 2: an MCP server over your jobs data (search_jobs, get_job, skills_gap). Connect it to your coding agent and watch where it misreads the tools." },
+    ],
+    artifact: "Job Match Assistant: RAG + agent + MCP server. Give it your CV and it returns matching dev.bg ads plus a skills-gap analysis." },
+  { n: 3, title: "Production quality, security & leadership", covers: "covers topics: evals · observability · security · LLMOps · AI adoption",
+    weeks: [
+      { t: "Evals",
+        topics: "Eval datasets, code-based checks vs. LLM-as-judge, RAG metrics (faithfulness, context precision and recall), regression evals in CI, error analysis.",
+        res: [["book", "AI Engineering ch. 3–4"],
+              ["read", L("Hamel Husain: Your AI Product Needs Evals", "https://hamel.dev/blog/posts/evals/")],
+              ["read", L("What We've Learned From A Year of Building with LLMs", "https://applied-llms.org")],
+              ["read", L("Eugene Yan: Patterns for Building LLM-based Systems", "https://eugeneyan.com/writing/llm-patterns/")],
+              ["tool", L("RAGAS", "https://docs.ragas.io") + " · " + L("promptfoo", "https://www.promptfoo.dev")]],
+        do: "30–50 test questions for the capstone that run in CI on every prompt or model change." },
+      { t: "Observability, guardrails & LLMOps",
+        topics: "Tracing (Langfuse, LangSmith, OpenTelemetry GenAI), cost and latency monitoring, LLM gateway (routing, fallbacks, caching, token budgets), choosing models by cost and capability, prompt versioning, canary rollouts, moderation.",
+        res: [["book", "AI Engineering ch. 9–10 · LLM Engineer's Handbook (LLMOps chapters)"],
+              ["tool", L("Langfuse", "https://langfuse.com")]],
+        do: "Add tracing and a cost dashboard to the capstone. Route simple queries to a cheaper model." },
+      { t: "AI security & governance",
+        topics: "Direct and indirect prompt injection, data leakage, excessive agency, least-privilege tools, approval gates, audit logs, securing MCP servers, AI supply chain, EU AI Act basics.",
+        res: [["read", L("OWASP Top 10 for LLM Applications (2025)", "https://genai.owasp.org/llm-top-10/")],
+              ["read", L("OWASP Agentic AI: Threats and Mitigations", "https://genai.owasp.org")],
+              ["course", L("DeepLearning.AI: Red Teaming LLM Applications", DLAI)]],
+        do: "Plant an injected instruction inside a job ad, check whether your agent obeys it, fix it, and add the attack to your evals." },
+      { t: "Wrap-up & interview prep",
+        topics: "Polish the capstone (README, architecture diagram, eval results). Prepare stories: catching bad agent code, designing RAG, making an agent safe enough to move money. Lead track: AI adoption playbook, quality gates for generated code, metrics (DORA, PR cycle time, agent acceptance rate), cost governance.",
+        res: [["book", "Accelerate (Forsgren, Humble, Kim) for the metrics side"],
+              ["course", L("Hugging Face LLM Course", "https://huggingface.co/learn/llm-course") + " (optional: fine-tuning with LoRA)"]],
+        do: "Run a mock interview: explain the capstone's architecture and trade-offs in 10 minutes." },
+    ],
+    artifact: "Capstone with evals in CI, tracing, a cost dashboard and documented security mitigations. This is your portfolio piece for interviews." },
+];
+
+const READY = [
+  "Explain tokens, context windows, sampling and hallucination, and debug a misbehaving prompt.",
+  "Show a real feature built with an AI coding agent and explain how you verified it.",
+  "Build streaming, tool-calling, structured-output LLM features in your main stack.",
+  "Build RAG end to end: chunking → embeddings → pgvector → re-rank → cited answer.",
+  "Write an agent without a framework, and explain when LangGraph is worth it.",
+  "Ship an MCP server whose tools a model uses correctly.",
+  "Run an eval suite in CI and show a regression it caught.",
+  "Name the OWASP LLM top risks and show the mitigations in your own project.",
+  "Discuss the cost, latency and quality trade-offs of choosing a model.",
+];
+
+// --- persistence (per-browser convenience only) ---
+const KEY = "ai-syllabus-progress-v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { state = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+
+// --- render ---
+const max = 80;
+document.getElementById("chart").innerHTML = DEMAND.map(([n, s, v]) => `
+  <div class="row">
+    <div class="name">${n}${s ? `<small>${s}</small>` : ""}</div>
+    <div class="track" role="img" aria-label="${v} ads"><div class="fill" style="width:${(v / max) * 100}%"></div></div>
+    <div class="n">${v}</div>
+  </div>`).join("") +
+  `<div class="axis"><div></div><div><span>0</span><span>20</span><span>40</span><span>60</span><span>80</span></div><div></div></div>`;
+
+document.getElementById("booklist").innerHTML = BOOKS.map(([t, w, y]) =>
+  `<div class="book"><h3>${t}</h3><span class="who">${w}</span><span class="why">${y}</span></div>`).join("");
+
+let wn = 0;
+document.getElementById("months").innerHTML = MONTHS.map(m => `
+  <section aria-labelledby="m${m.n}">
+    <div class="month-head">
+      <h2 id="m${m.n}"><span class="eyebrow" style="display:block;margin-bottom:6px">Month ${m.n}</span>${m.title}</h2>
+      <span class="covers">${m.covers}</span>
+    </div>
+    <div class="weeks">
+      ${m.weeks.map(w => { wn++; const id = "w" + wn; return `
+      <article class="week${state[id] ? " is-done" : ""}" data-id="${id}">
+        <div class="week-top">
+          <span class="wk">WEEK ${String(wn).padStart(2, "0")}</span>
+          <label class="check"><input type="checkbox" id="${id}" ${state[id] ? "checked" : ""}> Done</label>
+        </div>
+        <h3>${w.t}</h3>
+        <p class="topics">${w.topics}</p>
+        <ul class="res">${w.res.map(([k, r]) => `<li><span class="tag">${k}</span><span>${r}</span></li>`).join("")}</ul>
+        <p class="do"><b>Build</b>${w.do}</p>
+      </article>`; }).join("")}
+      <p class="artifact"><b>Month ${m.n} deliverable:</b> ${m.artifact}</p>
+    </div>
+  </section>`).join("");
+
+document.getElementById("ready").innerHTML = READY.map((r, i) =>
+  `<li><label><input type="checkbox" id="r${i}" ${state["r" + i] ? "checked" : ""}><span>${r}</span></label></li>`).join("");
+
+function refresh() {
+  const weeksDone = Array.from({ length: 12 }, (_, i) => state["w" + (i + 1)]).filter(Boolean).length;
+  const readyDone = READY.filter((_, i) => state["r" + i]).length;
+  document.getElementById("prog-head").textContent = `${weeksDone}/12`;
+  document.getElementById("prog-ready").innerHTML = `<b>${readyDone}</b> of ${READY.length} checked`;
+}
+document.addEventListener("change", e => {
+  const el = e.target;
+  if (el.type !== "checkbox" || !el.id) return;
+  state[el.id] = el.checked;
+  save();
+  const card = el.closest(".week");
+  if (card) card.classList.toggle("is-done", el.checked);
+  refresh();
+});
+refresh();
+</script>
